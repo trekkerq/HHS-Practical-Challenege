@@ -36,4 +36,8 @@ With the Node Package Manager - npm i -g create-react-app (global install) allow
 - Additional includes @material-ui/core, @material-ui/icons make the interface more immersive for the UX/UI experience for this concept only.
 - Material UI is a React Components library for builidng components faster for web, mobile development allowing the developer to design their own system with Material Design guideline.
 
+Run the App
+npm start
+
+
 
