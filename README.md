@@ -39,5 +39,41 @@ With the Node Package Manager - npm i -g create-react-app (global install) allow
 Run the App
 npm start
 
+Steps breakdown for Challenge
+1. Create React.js app
+2. Inspect Package.json - Install dependencies 
+                          a.(@material-ui/core, 
+                          b. @material-ui/icons(optional), 
+                          c. Axios.js(Fetching API, Video content files 
+                          (Drupal CMS) node.js instance SSR
+ 3. App.js - create Class Component(state) instead of dummy function component (no state)
+                          a. Created individual components to handle the over UI, which is React.js powerful features <Component (props)/> 
+                          b. props: onSubmit(), passing video palylist to the main UI
+                          c. map(videos in playlist) create new Item props, rendering listed videos
+                          
+  4. State management - using the Class component intial state={videos, videoplaylist, selection of videos in playlist} current/ user event listeners functions(event.target.value) Using setState({create object to hold response.data.playlist.items}) loading new video playlist
+  5. Async/Await in Axios.js - Optional create separate JSX Elements/Components to handle the Drupal/Node instances SSR video playlist files.
+  6. Events - onClick, HandleSubmit, onFormSubmit
+  7. Lifecycle methods: Ensure the app loads properly one the Class component load is in ReactDOM.
+  8. Playlist UI - fetching the data from src(Drupal) for this practical exercise I used my owm YT channel, SSR video content files to ensure resources, video content loaded fast and minimize any buffering issues. none discovered.
+  9. Mapping through VideoPlayList Component (
+
+    const VideoList = ({ videos, videoSelected }) //using arrown functions => {
+      const listOfVideos //in playlist = videos.map((video, node) => //Arrow Functions loops through video playlist <VideoItem key={id}//required videos={video object}> )
+    }
+    return listOfVideos//UI Material design optional (Grid, Paper, Typography, Icons) //endless design solutions in the MD systems.
+    
+10. Wrap up:
+            In this Practical Code execise demo components create included;
+            App.js - Class Component(intial state functionality
+            VideoPlayList.js - Displays the list of videos in Playlist
+            VideoDetail.js - Displays the video content details (Drupal CMS instances will load own endpoints/file path mappings)
+            VideoPlayListItem.js - Separating the components in modular best practices is the powerful and makes reactive frameworks so easy to troubleshoot and make changes instead large codebases.
+            
+Conclusion: I really like the this project, it gave me a chance to create more React.js experience in thinking, documenting, and I decided to create GitHub repository for the great opportunity to showcase my JS framework skills and growing my approach to a more modern JS framework world. Thank you, Ty "Humble Developer"            
+              
+
+
+
 
 
