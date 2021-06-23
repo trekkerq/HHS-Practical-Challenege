@@ -63,6 +63,152 @@ Steps breakdown for Challenge
     }
     return listOfVideos//UI Material design optional (Grid, Paper, Typography, Icons) //endless design solutions in the MD systems.
     
+    App.js Class Component
+    ---------------------
+    
+    //state
+    state = {
+        //Video array empty []
+        videos: [],
+        selectedVideo: null,
+    }
+    //Adding Lifecycle methods (ComponentDIMount()) to ensure the component loads after Class component loads properly / use to load search terms relating to HHS
+    componentDidMount(){
+        this.handleSubmit('Scholastic Donates Books to Winners of HHS Early Head Start Partnership Grants')
+
+    }
+
+    //Create function to select video / Class allow for data to pass to the current state
+    onVideoSelect = (video) => {
+        //Create object to fetch the data and the data pushed to current setState in playlist item selected video JSX Element
+        this.setState({ selectedVideo: video});
+
+    }
+
+    //handleSubmit(searchTerm) props being passed (fetch data from YT APIv3) for demo only (replace with Drupal CMS node SSR) in async/await
+    handleSubmit = async (searchTerm) => {
+        //Await the response from YT API with Axios instance of the Fetch API (search {params: {q:searchTerm}} destructuring)
+        //const response = await hhs_drupal.get('search', { params: { q: searchTerm }}); 
+        //see what data response structure ()
+        //console.log(response);
+
+        //ne way
+        const response = await hhs_drupal.get('search', {
+            params: {
+                part: 'snippet',
+                maxResults: 5,
+                key: 'API Key' optional,
+                q: searchTerm,
+        
+            }
+
+        });
+
+        //console.log(response.data.items);
+        //Now this.setState({videos: response}) destructuring the response{array[0]}
+        this.setState({ videos: response.data.items, selectedVideo: response.data.items[0] });
+
+    }
+    ---------------------
+    
+    Mapping over Playlist Videos
+    ---------------------
+    const videoList = ({ videos, onVideoSelect }) => {
+     //map through the list of videos
+    const listOfVideos = videos.map((video, id) => <VideoItem onVideoSelect={onVideoSelect} key={id} video={video} /> )
+
+    return (
+
+        <Grid container spacing={10}>
+        {listOfVideos}
+        </Grid>        
+        
+        )  
+
+}
+-------------------------------
+
+VideoPlayListDetail.js UI
+
+const VideoDetail = ({ video }) => {
+    if(!video) return <div>Loading...</div>
+
+    //console.log(video.id.videoId);
+    console.log(video);
+
+    //Create dynamic data with back ticks `${}`
+    const videoSrc = `https://www.hhs_drupal/node_instance/${video.id.videoId}`
+
+    //conditional statement to check for video in playlist, if not return an empty <div>
+    return (
+        <React.Fragment>
+            <Paper elevation={6} style={{ height: '70%' }}>
+            <iframe  frameBorder="0" height="100%" width="100%" title="Video PlayList App" src={videoSrc}/>
+            </Paper>
+            <Paper elevation={6} style={{ padding: '15px' }}>
+            {/* Fetching data (video.snippet.title, video.snippet.channelTitle, video.snippet.description) */}
+            <Typography variant="h4">{video.snippet.title} - {video.snippet.HHs_Title}</Typography>
+            <Typography variant="subtitle1">{video.playlistVideoTitle}</Typography>
+            <Typography variant="subtitle2">{video.description}</Typography>
+            </Paper>          
+        </React.Fragment>
+    )
+}
+-------------------------------
+
+VideoListItem.js
+
+   const VideoItem = ({ video, onVideoSelect }) => {
+    return (
+        <Grid item xs={12}>
+            {/* //Arrow function onClick event  allow user select and play video in playlist*/} 
+            <Paper style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}} onClick={() => onVideoSelect(video)}>
+                <img style={{ marginRight: '20px'}} alt="thumbnail" src={video.drupal.url} />
+                <Typography variant="subtitle1"><b>{video.hhstitle}</b></Typography>
+            </Paper>
+
+        </Grid>
+    )
+} 
+
+PlayListVideoSearch.js
+    ---------------------
+      //Managing state of the searchbar
+    state = {
+        searchTerm: '',
+        //Use state modifiers based on state components
+    }
+
+    //Bind to scope to class in Arrow Function workaround (accepts one value (e) event) (implicit)
+    handleChange = (event) => 
+        //this will refer to the class component -setState above for the state = {current state of searchTerm} in state=[]
+        //setState(searchTerm) change at the current view state
+        //console log the search term value being passed to the event listener(event.target.value)
+        //console.log(event.target.value);
+        //This will update the state and pass the value of the SearchTerm input onChange(lifecycle input methods)
+        this.setState({ searchTerm: event.target.value});
+    //HandleSubmit Arrow Function when form is TextField input passed search term (fetch SearchTerm) from the state
+    //Destructuring ES6 (searchTerm) / onFormSubmit this.props
+    handleSubmit = (event) => {
+        const { searchTerm } = this.state;
+        const { onFormSubmit } = this.props;
+        //pass the props the searchTerm
+        //. providing data to the onFormSubmit()
+        onFormSubmit(searchTerm);
+        //no refresh the the search bar input field
+
+      
+        //const { searchTerm, value, value1 } = this.state;
+        //console.log(searchTerm, value, value1)
+        //otherwise if not destructuring would be before ES6
+        //console.log(this.state.searchTerm, this.state.value, this.state.value1);
+        //console.log(this.state.value1);
+        event.preventDefault();
+    }
+    
+    --------------------
+    
+    
 10. Wrap up:
             In this Practical Code execise demo components create included;
             App.js - Class Component(intial state functionality
